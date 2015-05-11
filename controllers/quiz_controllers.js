@@ -19,11 +19,19 @@ exports.show = function (req, res) {
 
 // GET /quizes
 exports.index = function(req, res) {
+	if (req.query.search != null){
+		models.Quiz.findAll({where:["pregunta like ?", '%'+req.query.search+'%'], order: 'pregunta'}).then(
+			function(quizes) {
+			res.render('quizes/index', {quizes: quizes});
+			}	
+	).catch(function(error) { next(error);})
+	} else {
 	models.Quiz.findAll().then(
 		function(quizes) {
 		res.render('quizes/index', { quizes: quizes});
 	  }
-	).catch(function(error) { next(error);})
+	).catch(function(error) { next(error);});
+  };
 };
 
 // GET /quizes/:id/answer
