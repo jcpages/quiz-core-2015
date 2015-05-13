@@ -22,13 +22,13 @@ exports.index = function(req, res) {
 	if (req.query.search != null){
 		models.Quiz.findAll({where:["pregunta like ?", '%'+req.query.search+'%'], order: 'pregunta'}).then(
 			function(quizes) {
-			res.render('quizes/index', {quizes: quizes, errors: []});
+			res.render('quizes/index.ejs', {quizes: quizes, errors: []});
 			}	
 	).catch(function(error) { next(error);})
 	} else {
 	models.Quiz.findAll().then(
 		function(quizes) {
-		res.render('quizes/index', { quizes: quizes, errors: []});
+		res.render('quizes/index.ejs', { quizes: quizes, errors: []});
 	  }
 	).catch(function(error) { next(error);});
   };
@@ -94,4 +94,11 @@ exports.update = function(req, res)  {
 			}
 		}
 	);
+};
+
+// DELETE /quizes/ :id 
+exports.destroy = function(req, res) {
+	req.quiz.destroy().then( function() {
+		res.redirect('/quizes');
+	}).catch(function(error){next(error)});
 };
