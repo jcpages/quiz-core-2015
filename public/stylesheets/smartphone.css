@@ -2,8 +2,10 @@ body                 { background: #333; }
 
 #page-wrap:after     { content: "Smartphone Layout"; }
 
-header               { height: 50px; }
-section              { height: 450px;}
-h2 span, section h3  { display: none; }
-body                 { font-size: xx-large; }
-footer, input        { font-size: large; }
+header                          { height: 50px; }
+section                         { height: 450px;}
+h2 span, section h3, label.rem  { display: none; }
+body                            { font-size: xx-large; }
+input, button                   { font-size: x-large; }
+footer                          { font-size: large; }
+.quiz_img                       { float: none; }
