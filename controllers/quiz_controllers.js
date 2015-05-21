@@ -35,19 +35,17 @@ exports.show = function (req, res) {
 
 // GET /quizes
 exports.index = function(req, res) {
-	if (req.query.search != null){
-		models.Quiz.findAll({where:["pregunta like ?", '%'+req.query.search+'%'], order: 'pregunta'}).then(
-			function(quizes) {
-			res.render('quizes/index.ejs', {quizes: quizes, errors: []});
-			}	
-	).catch(function(error) { next(error);})
-	} else {
-	models.Quiz.findAll().then(
+	var options = {};
+	if (req.user){      // req.user es creado por autoload de usuario
+		                // si la ruta lleva el parámetro .quizId
+		options.where = {UserId: req.user.id}
+	}
+
+	models.Quiz.findAll(options).then(
 		function(quizes) {
 		res.render('quizes/index.ejs', { quizes: quizes, errors: []});
 	  }
 	).catch(function(error) { next(error);});
-  };
 };
 
 // GET /quizes/:id/answer
