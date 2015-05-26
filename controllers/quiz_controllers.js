@@ -34,14 +34,14 @@ exports.show = function (req, res) {
 };
 
 // GET /quizes
-exports.index = function(req, res) {
+exports.index = function(req, res, next) {
 	var options = {};
 	if (req.user){      // req.user es creado por autoload de usuario
 		                // si la ruta lleva el parámetro .quizId
 		options.where = {UserId: req.user.id}
 	}
 
-	models.Quiz.findAll(options).then(
+ 	models.Quiz.findAll(options).then(
 		function(quizes) {
 		res.render('quizes/index.ejs', { quizes: quizes, errors: []});
 	  }
@@ -123,4 +123,21 @@ exports.destroy = function(req, res) {
 	req.quiz.destroy().then( function() {
 		res.redirect('/quizes');
 	}).catch(function(error){next(error)});
+};
+
+exports.search = function(req, res, next){
+	var q = req.query.q || '';
+	var search = "%" + q.replace(" ", '%')+"%";
+
+	models.Quiz.findAll({where: ["pregunta like ?", search], order: 'pregunta'})
+	.then(function(quizes){
+		res.render('quizes/search', {
+			anterior: q, 
+			quizes: quizes,
+			errors: []
+		})
+	}).error(function(error){
+		console.log('Error: No puedo buscar en las preguntas.', error);
+		res.redirect('/');
+	});
 };

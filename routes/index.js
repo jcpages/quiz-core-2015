@@ -39,6 +39,7 @@ router.get('/user/:userId(\\d+)/quizes', quizController.index);
 
 //Definición de rutas de /quizes
 router.get('/quizes',                       quizController.index);
+router.get('/quizes/search',                quizController.search);
 router.get('/quizes/:quizId(\\d+)',         quizController.show);
 router.get('/quizes/new',                   sessionController.loginRequired, quizController.new);
 router.get('/quizes/:quizId(\\d+)/answer',  quizController.answer);
